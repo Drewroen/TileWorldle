@@ -49,6 +49,23 @@ this.wordle.bundle = function(e) {
         window.localStorage.removeItem('gameState')
         window.location.reload()
     }
+    function todaysWordOnStartup() {
+        var index = eval(solutionLookupFn)(new Date)
+
+        processGameState(index);
+    }
+    function processGameState(index)
+    {
+        var randomize = JSON.parse(window.localStorage.getItem('randomize')) || {current, indices: []}
+
+        if (!randomize || randomize.current != index)
+        {
+            setRandomizeLocalStorage(index, null)
+        
+            window.localStorage.removeItem('gameState')
+        }
+
+    }
     window.todaysWord = specificWord
     window.randomWord = randomWord
     function a(e) {
@@ -1595,8 +1612,8 @@ this.wordle.bundle = function(e) {
                         color: var(--color-tone-1);
                     }
                     </style>
-                        <p>Replay a previous <strong>TILEWORLDLE</strong> below.</p>
-                        <p>Completed words will be marked with a ✅, but the results are not saved.</p>
+                        <p>Info on previous <strong>TILEWORLDLES</strong> below.</p>
+                        <p>Completed words will be marked with a ✅</p>
                     `
                     o.appendChild(p)
 
@@ -1619,7 +1636,7 @@ this.wordle.bundle = function(e) {
                         innerListHtml += `
                             <li
                                 style="display:flex; justify-content:space-evenly; align-items:center; padding:15px 0; cursor:pointer; border-bottom:1px grey solid;"
-                                onclick="window.todaysWord(${i})"
+                                
                             >
                             <div style="width:30px;">${i}</div><div style="flex-grow:1;">${puzzleDate.toDateString()}</div><div style="width:27px;">${successEmoji}</div>
                             </li>
@@ -2401,6 +2418,7 @@ this.wordle.bundle = function(e) {
         }]),
         t
     }(c(HTMLElement));
+    todaysWordOnStartup();
     return customElements.define("countdown-timer", Us),
     e.CountdownTimer = Us,
     e.GameApp = ts,
